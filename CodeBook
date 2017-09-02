@@ -8,7 +8,7 @@ Helper functions
 Constants
 Downloading and loading data
 Manipulating data
-Writing final data to CSV
+Writing final data to txt
 Helper functions
 
 ### Some functions to avoid code repetition and make the rest of code more clean.
