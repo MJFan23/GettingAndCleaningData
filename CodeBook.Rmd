@@ -1,0 +1,84 @@
+---
+title: "CodeBook"
+author: "Lauren Mayer"
+date: "9/2/2017"
+output: html_document
+---
+
+## Code Book
+
+### This document describes the code inside GettingAndCleaningData.R.
+
+#### The code is splitted (by comments) in some sections:
+
+Helper functions
+Constants
+Downloading and loading data
+Manipulating data
+Writing final data to txt
+Helper functions
+
+### Some functions to avoid code repetition and make the rest of code more clean.
+
+fileJoin
+
+### Used to build file paths
+
+downloadToDataDir
+
+### Downloads the given url to the given destiny file. It also creates data dir if it doesn't exist.
+
+extractUciHarFile
+
+### Extract a file from the zipped UCI HAR file.
+
+uciHarDataFile
+
+### Read dataset files from UCI HAR to given name and prefix. Known names are "train" and "test". 
+Known prefixes are "X", "y" and "subject".
+
+Examples:
+
+/train/X_train.txt
+/train/y_train.txt
+/train/subject_train.txt
+loadUciHarData
+
+### Loads data, labels and subjects from UCI HAR dataset to a data.frame. The returned data.frame contains a column Activity with labels integer codes, a column Subject with subjects integer codes and all other columns from data.
+
+Constants
+
+Some fixed values like dataDir, outputDir and outputFile used in the other parts of the code.
+
+### Downloading and loading data
+
+Downloads the UCI HAR zip file
+Reads the activity labels to activityLabels
+Reads the column names of data to features
+Reads the test data.frame to testData
+Reads the trainning data.frame to trainningData
+Manipulating data
+
+Merges test data and trainning data to allData
+   X<-rbind(XTest, XTrain)
+   Y<-rbind(YTest, YTrain)
+   Subject<-rbind(SubjectTest, SubjectTrain)
+
+Indentifies the mean and std columns (plus Activity and Subject) to meanAndStdCols
+Extracts a new data.frame (called meanAndStdData) with only those columns from meanAndStdCols.
+Summarizes meanAndStdData calculating the average for each column for each activity/subject pair to meanAndStdAverages.
+Transforms the column Activity into a factor.
+Uses activityLabels to name levels of Activity factor.
+At this point the final data frame looks like this:
+
+> head(TidyData[order(SubjectID)][,c(1:4), with = FALSE],12) 
+##   SubjectID Activity tBodyAcc-mean()-X tBodyAcc-mean()-Y
+## 1         2 STANDING         0.2571778       -0.02328523
+## 2         2 STANDING         0.2860267       -0.01316336
+## 3         2 STANDING         0.2754848       -0.02605042
+## 4         2 STANDING         0.2702982       -0.03261387
+## 5         2 STANDING         0.2748330       -0.02784779
+## 6         2 STANDING         0.2792199       -0.01862040      
+
+### Writing final data to .txt
+Writes TidyData data frame to the ouputfile.
